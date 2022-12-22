@@ -1,5 +1,6 @@
 type SplitFn<T> = fn(T) -> bool;
 
+// Split an iterator into segments
 pub struct SplitIter<T> where T: Clone {
     source: Box<dyn Iterator<Item=T>>,
     check: SplitFn<T>,
@@ -29,12 +30,13 @@ impl<T> Iterator for SplitIter<T> where T: Clone {
     }
 }
 
-
+// Return the highest element of an iterator, or None if empty
 pub fn highest(mut iter: impl Iterator<Item=i32>) -> Option<i32> {
     let first = iter.next()?;
     Some(iter.fold(first, |a, b| if a > b { a } else { b }))
 }
 
+// Return the topN elements of an iterator
 pub fn top_n_values(values: impl Iterator<Item=i32>, len: usize) -> Vec<i32> {
     let mut top: Vec<i32> = Vec::new();
     for value in values {
@@ -47,6 +49,7 @@ pub fn top_n_values(values: impl Iterator<Item=i32>, len: usize) -> Vec<i32> {
     top
 }
 
+// Return the sum of an iterator of i32
 pub fn sum(values: impl Iterator<Item=i32>) -> i32 {
     values.fold(0, |a,b| a+b)
 }
