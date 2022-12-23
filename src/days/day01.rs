@@ -2,7 +2,7 @@ use crate::utils::{*};
 
 // Find the highest sum of values separated by empty line
 pub fn day_01() -> i32 {
-    let lines = read_lines("src/days/day01.txt")
+    let lines = read_lines("inputs/day01.txt")
         .unwrap()
         .map(|l| l.unwrap());
     
@@ -15,7 +15,7 @@ pub fn day_01() -> i32 {
 
 // Find the sum of the top three highest sum of values, separated by empty line
 pub fn day_01_b() -> i32 {
-    let lines = read_lines("src/days/day01.txt")
+    let lines = read_lines("inputs/day01.txt")
         .unwrap()
         .map(|l| l.unwrap());
 
