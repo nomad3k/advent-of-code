@@ -11,8 +11,10 @@ fn main() {
     let command = args.get(0).unwrap().as_str();
     let mut register = HashMap::<String, DayFn>::new();
 
-    register.insert("01".to_string(), days::day_01);
-    register.insert("01b".to_string(), days::day_01_b);
+    register.insert("01".to_string(), days::day01::day_01);
+    register.insert("01b".to_string(), days::day01::day_01_b);
+    register.insert("02".to_string(), days::day02::day_02);
+    register.insert("02b".to_string(), days::day02::day_02_b);
 
     if let Some(day) = args.get(1) {
         if let Some(day_fn) = register.get(day) {

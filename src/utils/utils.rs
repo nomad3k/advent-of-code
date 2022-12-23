@@ -1,3 +1,12 @@
+use std::path::{Path};
+use std::fs::{File};
+use std::io::{self, BufReader, BufRead, Lines};
+
+pub fn read_lines(filename: impl AsRef<Path>) -> io::Result<Lines<BufReader<File>>> {
+    let file = File::open(filename)?;
+    Ok(BufReader::new(file).lines())
+}
+
 type SplitFn<T> = fn(T) -> bool;
 
 // Split an iterator into segments

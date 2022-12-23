@@ -1,12 +1,4 @@
-use std::path::{Path};
-use std::fs::{File};
-use std::io::{self, BufReader, BufRead, Lines};
 use crate::utils::{*};
-
-fn read_lines(filename: impl AsRef<Path>) -> io::Result<Lines<BufReader<File>>> {
-    let file = File::open(filename)?;
-    Ok(BufReader::new(file).lines())
-}
 
 // Find the highest sum of values separated by empty line
 pub fn day_01() -> i32 {
