@@ -1,6 +1,48 @@
 use std::path::{Path};
 use std::fs::{File};
 use std::io::{self, BufReader, BufRead, Lines};
+use core::cmp::Ordering;
+
+type VecIntoIter<T> = ::std::vec::IntoIter<T>;
+
+pub trait MyIterator : Iterator {
+
+    fn sorted(self) -> VecIntoIter<Self::Item>
+        where Self: Sized,
+              Self::Item: Ord
+    {
+        let mut v = Vec::from_iter(self);
+        v.sort();
+        v.into_iter()
+    }
+
+    fn sorted_by<F>(self, cmp: F) -> VecIntoIter<Self::Item>
+        where Self: Sized,
+              F: FnMut(&Self::Item, &Self::Item) -> Ordering,
+    {
+        let mut v = Vec::from_iter(self);
+        v.sort_by(cmp);
+        v.into_iter()
+    }
+
+    fn deduped(self) -> VecIntoIter<Self::Item>
+        where Self: Sized,
+              Self::Item: PartialEq,
+    {
+        let mut v = Vec::from_iter(self);
+        v.dedup_by(|a,b| a==b);
+        v.into_iter()
+    }
+
+    fn split_nth(self, count: usize) -> NthSplitter<Self>
+        where Self: Sized,
+              Self::Item: Clone,
+    {
+        NthSplitter { source: self, count }
+    }
+}
+
+impl<T> MyIterator for T where T: Iterator { }
 
 pub fn read_lines(filename: impl AsRef<Path>) -> io::Result<Lines<BufReader<File>>> {
     let file = File::open(filename)?;
@@ -9,19 +51,54 @@ pub fn read_lines(filename: impl AsRef<Path>) -> io::Result<Lines<BufReader<File
 
 type SplitFn<T> = fn(T) -> bool;
 
+// -----------------------------------------------------------------------------
+// NthSplitter
+// -----------------------------------------------------------------------------
+
+pub struct NthSplitter<T>
+    where T: Iterator
+{
+    source: T,
+    count: usize,
+}
+
+impl<T,U> Iterator for NthSplitter<T>
+    where T: Iterator<Item=U>,
+{
+    type Item = Vec<U>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let mut result : Vec<U> = vec![];
+        for _ in 1..=self.count {
+            let item = self.source.next()?;
+            result.push(item);
+        }
+        Some(result)
+    }
+}
+
+// -----------------------------------------------------------------------------
 // Split an iterator into segments
-pub struct SplitIter<T> where T: Clone {
+// -----------------------------------------------------------------------------
+
+pub struct SplitIter<T>
+    where T: Clone
+{
     source: Box<dyn Iterator<Item=T>>,
     check: SplitFn<T>,
 }
 
-impl<T> SplitIter<T> where T: Clone {
+impl<T> SplitIter<T>
+    where T: Clone
+{
     pub fn new(source: Box<dyn Iterator<Item=T>>, check: SplitFn<T>) -> SplitIter<T> {
-        SplitIter { source: source, check: check }
+        SplitIter { source, check }
     }
 }
 
-impl<T> Iterator for SplitIter<T> where T: Clone {
+impl<T> Iterator for SplitIter<T> 
+    where T: Clone
+{
     type Item = Vec<T>;
 
     fn next(&mut self) -> Option<Vec<T>> {
@@ -117,5 +194,15 @@ mod tests {
         let actual = super::sum(values);
 
         assert_eq!(actual, 15);
+    }
+
+    #[test]
+    fn split_nth() {
+        let lines: Vec<i32> = vec![1,2,3,4,5,6];
+        let mut iter = lines.into_iter().split_nth(3);
+        let actual = iter.next();
+        let expected = Some(vec![1,2,3]);
+
+        assert_eq!(actual, expected);
     }
 }

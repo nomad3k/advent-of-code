@@ -1,1 +1,1 @@
-pub type DayFn = fn() -> i32;
+pub type DayFn = fn() -> Result<i32, &'static str>;
