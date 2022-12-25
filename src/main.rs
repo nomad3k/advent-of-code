@@ -5,13 +5,18 @@ mod day;
 use day::DayFn;
 mod days;
 mod utils;
-use utils::MyIterator;
+use utils::*;
+
+fn life() -> Result<i32, &'static str> { 
+    Ok(42)
+}
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let command = args.get(0).unwrap();
 
     let mut register = HashMap::<String, DayFn>::new();
+    register.insert("meaning_of_life".to_string(), life);
     register.insert("01".to_string(), days::day01::day_01);
     register.insert("01b".to_string(), days::day01::day_01_b);
     register.insert("02".to_string(), days::day02::day_02);
