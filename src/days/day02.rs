@@ -134,14 +134,14 @@ fn calculate_total_score_from_outcome(lines: Box<dyn Iterator<Item=String>>) -> 
         .fold(0, |a,b| a +b)
 }
 
-pub fn day_02() -> i32 {
+pub fn day_02() -> Result<i32, &'static str> {
     let lines = read_lines("inputs/day02.txt").unwrap();
-    calculate_total_score_from_shape(Box::new(lines.map(|line| line.unwrap())))
+    Ok(calculate_total_score_from_shape(Box::new(lines.map(|line| line.unwrap()))))
 }
 
-pub fn day_02_b() -> i32 {
+pub fn day_02_b() -> Result<i32, &'static str> {
     let lines = read_lines("inputs/day02.txt").unwrap();
-    calculate_total_score_from_outcome(Box::new(lines.map(|line| line.unwrap())))
+    Ok(calculate_total_score_from_outcome(Box::new(lines.map(|line| line.unwrap()))))
 }
 
 #[cfg(test)]

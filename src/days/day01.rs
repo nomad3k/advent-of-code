@@ -16,19 +16,19 @@ fn calculate_sum_of_top_3(lines: Box<dyn Iterator<Item=String>>) -> i32 {
 }
 
 // Find the highest sum of values separated by empty line
-pub fn day_01() -> i32 {
+pub fn day_01() -> Result<i32, &'static str> {
     let lines = read_lines("inputs/day01.txt")
         .unwrap()
         .map(|l| l.unwrap());
-    calculate_highest(Box::new(lines))
+    Ok(calculate_highest(Box::new(lines)))
 }
 
 // Find the sum of the top three highest sum of values, separated by empty line
-pub fn day_01_b() -> i32 {
+pub fn day_01_b() -> Result<i32, &'static str> {
     let lines = read_lines("inputs/day01.txt")
         .unwrap()
         .map(|l| l.unwrap());
-    calculate_sum_of_top_3(Box::new(lines))
+    Ok(calculate_sum_of_top_3(Box::new(lines)))
 }
 
 #[cfg(test)]
