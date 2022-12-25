@@ -40,12 +40,10 @@ fn first_common_item(first: String, second: String) -> Option<char> {
 }
 
 fn calculate_sum_of_common_priorities(lines: Box<dyn Iterator<Item=String>>) -> i32 {
-    let result: i32 = lines.map(|line| comparments(line).unwrap())
-                    .map(|(f, s)| first_common_item(f, s).unwrap())
-                    .map(|i| priority(i).unwrap())
-                    .fold(0, |a,b| a + b)
-                    ;
-    result
+    lines.map(|line| comparments(line).unwrap())
+         .map(|(f, s)| first_common_item(f, s).unwrap())
+         .map(|i| priority(i).unwrap())
+         .sum()
 }
 
 fn common_item<T>(lines: T) -> Option<char>
@@ -70,11 +68,10 @@ fn common_item<T>(lines: T) -> Option<char>
 }
 
 fn calculate_sum_of_3_line_common_items(lines: Box<dyn Iterator<Item=String>>) -> i32 {
-    let total = lines.split_nth(3)
+    lines.split_nth(3)
         .map(|group| common_item(group).unwrap())
         .map(|item| priority(item).unwrap())
-        .fold(0, |a,b| a+b);
-    total
+        .sum()
 }
 
 pub fn day_03() -> Result<i32, &'static str> {

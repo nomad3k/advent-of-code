@@ -124,14 +124,14 @@ fn calculate_total_score_from_shape(lines: Box<dyn Iterator<Item=String>>) -> i3
     lines.map(|line| shapes_from_line(line).unwrap())
         .map(|round| { let Round(mine, theirs) = round; score_round(mine, theirs) } )
         .into_iter()
-        .fold(0, |a,b| a +b)
+        .sum()
 }
 
 fn calculate_total_score_from_outcome(lines: Box<dyn Iterator<Item=String>>) -> i32 {
     lines.map(|line| shapes_from_line_with_outcome(line).unwrap())
         .map(|round| { let Round(mine, theirs) = round; score_round(mine, theirs) } )
         .into_iter()
-        .fold(0, |a,b| a +b)
+        .sum()
 }
 
 pub fn day_02() -> Result<i32, &'static str> {

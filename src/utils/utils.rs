@@ -67,11 +67,6 @@ pub fn top_n_values(values: impl Iterator<Item=i32>, len: usize) -> Vec<i32> {
     top
 }
 
-// Return the sum of an iterator of i32
-pub fn sum(values: impl Iterator<Item=i32>) -> i32 {
-    values.fold(0, |a,b| a+b)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -118,13 +113,5 @@ mod tests {
         let top = super::top_n_values(values.into_iter(), 3);
 
         assert_eq!(top, [5, 9, 12]);
-    }
-
-    #[test]
-    fn sum() {
-        let values = vec![1, 2, 3, 4, 5].into_iter();
-        let actual = super::sum(values);
-
-        assert_eq!(actual, 15);
     }
 }

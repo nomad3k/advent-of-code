@@ -2,16 +2,16 @@ use crate::utils::{*};
 
 fn calculate_highest(lines: Box<dyn Iterator<Item=String>>) -> i32 {
     let groups = SplitIter::new(lines, |s| s == "");
-    let totals = groups.map(|g| g.iter().map(|s| s.trim().parse::<i32>().unwrap()).fold(0,|a,b|a+b));
+    let totals = groups.map(|g| g.iter().map(|s| s.trim().parse::<i32>().unwrap()).sum());
     let high = highest(totals).unwrap();
     high
 }
 
 fn calculate_sum_of_top_3(lines: Box<dyn Iterator<Item=String>>) -> i32 {
     let groups = SplitIter::new(Box::new(lines), |s| s == "");
-    let totals = groups.map(|g| g.iter().map(|s| s.trim().parse::<i32>().unwrap()).fold(0,|a,b|a+b));
+    let totals = groups.map(|g| g.iter().map(|s| s.trim().parse::<i32>().unwrap()).sum());
     let top3 = top_n_values(totals, 3);
-    let combined = sum(top3.into_iter());
+    let combined = top3.into_iter().sum();
     combined
 }
 
