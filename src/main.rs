@@ -23,6 +23,8 @@ fn main() {
     register.insert("02b".to_string(), days::day02::day_02_b);
     register.insert("03".to_string(), days::day03::day_03);
     register.insert("03b".to_string(), days::day03::day_03_b);
+    register.insert("04".to_string(), days::day04::day_04);
+    register.insert("04b".to_string(), days::day04::day_04_b);
 
     if let Some(day) = args.get(1) {
         if let Some(day_fn) = register.get(day) {
